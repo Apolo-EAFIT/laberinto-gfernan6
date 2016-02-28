@@ -1,0 +1,123 @@
+laberinto-gfernan6 created by Classroom for GitHub 
+import java.util.Scanner;
+
+public class Labyrinth5 {
+
+    private static int n;
+    private static char matrix[][];
+    private static Scanner sc = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        n = sc.nextInt();
+        matrix = new char[n][n];
+        intializeMatrix();
+        fillMatrix();
+        //showMatrix();
+        makeVisible(0, 0);
+        makeVisible(n - 1, n - 1);
+        //showMatrix();
+        System.out.println(calculateArea());
+    }
+
+    private static void intializeMatrix() {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                matrix[i][j] = '.';
+            }
+        }
+    }
+    
+    private static void fillMatrix() {
+        for (int i = 0; i < n; i++) {
+            String line = sc.next();
+            for (int j = 0; j < n; j++) {
+                if(line.charAt(j) == '#') {
+                   matrix[i][j] = '#';
+                }
+            }
+        }
+    }
+
+    private static void showMatrix() {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                System.out.print(matrix[i][j]);
+            }
+            System.out.println();
+        }
+    }
+
+    private static int calculateArea() {
+        int sum = 0;
+        
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (matrix[i][j] == '*') {
+                    if (i == 0) { // Top
+                        if (j != 0) {
+                            sum++;
+                        }
+                    } else {
+                        if (matrix[i - 1][j] == '#') {
+                            sum++;
+                        }
+                    }
+                    
+                    if (j == n - 1) { // Rigth
+                        if (i != n - 1) {
+                            sum++;
+                        }
+                    } else {
+                        if (matrix[i][j + 1] == '#') {
+                            sum++;
+                        }
+                    }
+                    
+                    if (j == 0) { // Left
+                        if (i != 0) {
+                            sum++;
+                        }
+                    } else {
+                        if (matrix[i][j - 1] == '#') {
+                            sum++;
+                        }
+                    }
+                    
+                    if (i == n - 1) { // Bottom
+                        if (j != n - 1) {
+                            sum++;
+                        }
+                    } else {
+                        if (matrix[i + 1][j] == '#') {
+                            sum++;
+                        }
+                    }
+                }
+            }
+        }
+        
+        return sum * 9;
+    }
+
+    private static void makeVisible(int i, int j) {
+        if (matrix[i][j] == '.') {
+            matrix[i][j] = '*';
+        }
+        
+        if (j < n - 1 && matrix[i][j + 1] == '.') {
+            makeVisible(i, j + 1);
+        } 
+        
+        if (j > 0 && matrix[i][j - 1] == '.') {
+            makeVisible(i, j - 1);
+        } 
+        
+        if (i < n - 1 && matrix[i + 1][j] == '.') {
+            makeVisible(i + 1, j);
+        } 
+        
+        if (i > 0 && matrix[i - 1][j] == '.') {
+            makeVisible(i - 1, j);
+        } 
+    }
+}  
